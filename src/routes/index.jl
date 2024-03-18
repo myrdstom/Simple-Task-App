@@ -13,8 +13,9 @@ function setup_router()
     router = HTTP.Router()
 
     # User routes
-    Routes.square_route(router)
-    Routes.hello_route(router)
+    Routes.get_all_users(router)
+    Routes.login(router)
+    Routes.register_user(router)
     return router
 end
 
