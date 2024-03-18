@@ -9,13 +9,14 @@ function cors_middleware(handler)
         # Define CORS headers
         headers = [
             "Access-Control-Allow-Origin" => "*",
-            "Access-Control-Allow-Methods" => "POST, OPTIONS",
-            "Access-Control-Allow-Headers" => "Content-Type"
+            "Access-Control-Allow-Methods" => "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers" => "Accept, Content-Type",
+            "Content-Type" => "application/json"  # This line is typically not necessary here.
         ]
 
         # Handle OPTIONS preflight request
         if HTTP.method(req) == "OPTIONS"
-            return HTTP.Response(200, headers)
+            return HTTP.Response(200, "application/json", headers)
         end
 
         # For non-OPTIONS requests, call the original handler and add CORS headers to the response
