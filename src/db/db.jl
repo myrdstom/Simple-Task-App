@@ -8,6 +8,7 @@ export add_user, get_users, add_task, get_tasks, clear_data
 const DB = Dict(
     :users => [
         Dict(
+            "user_id" => "41ed462f-f44c-47c5-a811-7b5bccfb0e69",
             "username" => "myrdstom",
             "firstname" => "Paul",
             "lastname" => "Nsereko",
