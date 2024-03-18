@@ -1,7 +1,7 @@
 # users/users.jl
 module Users
 
-export square
+export square, hello
 
 using HTTP, JSON3
 
@@ -31,6 +31,18 @@ function square(req::HTTP.Request)
 
         # Create JSON response
         response_body = JSON3.write(Dict("squared_result" => square_result))
+
+        return HTTP.Response(201, response_body)
+    catch ex
+        println("Error processing request: $ex")
+        return HTTP.Response(500, "Internal Server Error")
+    end
+end
+
+function hello(req::HTTP.Request)
+    try
+        # Create JSON response
+        response_body = JSON3.write(Dict("data" => "hello world again"))
 
         return HTTP.Response(200, response_body)
     catch ex
