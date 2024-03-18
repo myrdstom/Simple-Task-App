@@ -11,7 +11,7 @@ function cors_middleware(handler)
             "Access-Control-Allow-Origin" => "*",
             "Access-Control-Allow-Methods" => "GET, POST, OPTIONS",
             "Access-Control-Allow-Headers" => "Accept, Content-Type",
-            "Content-Type" => "application/json"  # This line is typically not necessary here.
+            "Content-Type" => "application/json",  # This line is typically not necessary here.
         ]
 
         # Handle OPTIONS preflight request

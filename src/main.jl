@@ -10,4 +10,4 @@ const ROUTER = HTTP.Router()
 Routes.setup_routes(ROUTER)
 
 # Serve the router on port 8080; the server runs in the background
-server = HTTP.serve(ROUTER, 8080; verbose=true, async=true)
+server = HTTP.serve(ROUTER, 8080; verbose = true, async = true)

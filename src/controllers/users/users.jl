@@ -24,8 +24,7 @@ function square(req::HTTP.Request)
         end
 
         num = json_body.squared_number
-
-
+        # println("The value of num $num")
 
         # Calculate the square
         square_result = num^2
