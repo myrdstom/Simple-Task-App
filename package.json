@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "julia --project main.jl -e \"import Pkg; Pkg.instantiate()\"",
-    "repl": "julia --project main.jl"
+    "install": "julia --project=. -e \"import Pkg; Pkg.instantiate()\"",
+    "repl": "julia --project src/main.jl",
+    "lint": "julia --project=. -e \"using JuliaFormatter; format(\\\"src\\\", verbose=true)\""
   },
   "keywords": [],
   "author": "",
