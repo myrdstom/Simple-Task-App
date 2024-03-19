@@ -124,6 +124,23 @@ function register_user(req::HTTP.Request)
         firstname = json_body["firstname"]
         lastname = json_body["lastname"]
 
+        if length(password) < 8
+            return HTTP.Response(
+                400,
+                JSON3.write("error" => "Password must be atleast 8 characters long"),
+            )
+        end
+
+        email_regex = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
+        if match(email_regex, email) === nothing
+            return HTTP.Response(
+                400,
+                JSON3.write("error" => "Email is not well structured"),
+            )
+        end
+
+
         user_found = false
         email_found = false
         for user in users
