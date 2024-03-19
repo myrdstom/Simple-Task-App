@@ -3,10 +3,17 @@ module Users
 
 export square, hello
 
-using HTTP, JSON3, UUIDs
+using HTTP, JSON3, UUIDs, JSONWebTokens
 
 include("../../db/db.jl")
 using .InMemoryDB
+
+
+function generate_jwt(claims::Dict)
+    encoding = JSONWebTokens.HS256("secretkey")
+    token = JSONWebTokens.encode(encoding, claims)
+    return token
+end
 
 
 function get_all_users(req::HTTP.Request)
@@ -48,6 +55,7 @@ function login(req::HTTP.Request)
 
 
         # Find user by username
+        current_user = nothing
         user_found = false
         password_match = false
         for user in users
@@ -56,17 +64,30 @@ function login(req::HTTP.Request)
                 # Check if the passwords match
                 if user["password"] == password
                     password_match = true
+                    current_user = user
                 end
                 break
             end
         end
+
+        println(current_user)
 
         if !user_found
             return HTTP.Response(404, JSON3.write("message" => "User not found"))
         elseif !password_match
             return HTTP.Response(401, JSON3.write("message" => "Invalid password"))
         else
-            response_body = JSON3.write("message" => "Login successful")
+            logged_in_user = Dict(
+                "username" => current_user["username"],
+                "email" => current_user["email"],
+                "firstname" => current_user["firstname"],
+                "lastname" => current_user["lastname"],
+                "exp" => time() + 86400,
+            )
+
+            token = generate_jwt(logged_in_user)
+            response_body =
+                JSON3.write(Dict("token" => token, "message" => "Login successful"))
             return HTTP.Response(200, response_body)
         end
 
@@ -139,9 +160,18 @@ function register_user(req::HTTP.Request)
                 "message" => "User Registered",
             )
 
-            response_body = JSON3.write(new_user)
 
             InMemoryDB.add_user(new_user)
+
+            token = generate_jwt(new_user)
+
+            response_body = JSON3.write(
+                Dict(
+                    "user" => new_user,
+                    "token" => token,
+                    "message" => "User successfully created",
+                ),
+            )
 
             return HTTP.Response(201, response_body)
         end
