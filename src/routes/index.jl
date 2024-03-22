@@ -3,9 +3,11 @@
 module RouterConfig
 
 using HTTP
-include("../features/users/user_route.jl")  # Adjust path as necessary
+include("../features/users/user_routes.jl")
+include("../features/tasks/task_routes.jl")
 
-using .Routes
+using .UserRoutes
+using .TaskRoutes
 
 export setup_router
 
@@ -13,9 +15,13 @@ function setup_router()
     router = HTTP.Router()
 
     # User routes
-    Routes.get_all_users(router)
-    Routes.login(router)
-    Routes.register_user(router)
+    UserRoutes.get_all_users(router)
+    UserRoutes.login(router)
+    UserRoutes.register_user(router)
+
+    #Task routes
+    TaskRoutes.get_all_tasks(router)
+
     return router
 end
 

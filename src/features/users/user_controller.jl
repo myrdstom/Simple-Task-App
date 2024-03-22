@@ -1,7 +1,6 @@
 # users/users.jl
 module Users
 
-export square, hello
 
 using HTTP, JSON3, UUIDs, JSONWebTokens
 
